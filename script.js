@@ -36,27 +36,56 @@ $(document).ready(function() {
 
 
     // FILTER BUTTON CLICK
-    $(".xg-btn-tag").on("click", function() {
-        if ($(this).hasClass("xg-btn-active")) {
-            return;
-        }
-        var tagFilter = $(this).data("tag");
-        $(".xg-btn-tag").removeClass("xg-btn-active");
-        $(this).addClass("xg-btn-active");
+    // $(".xg-btn-tag").on("click", function() {
+    //     if ($(this).hasClass("xg-btn-active")) {
+    //         return;
+    //     }
+    //     var tagFilter = $(this).data("tag");
+    //     $(".xg-btn-tag").removeClass("xg-btn-active");
+    //     $(this).addClass("xg-btn-active");
 
-        $(".xg-loader").fadeIn(100);
+    //     $(".xg-loader").fadeIn(100);
 
-        if (tagFilter == "all") {
-            $(".xg-img-wrap").fadeIn(100);
-        } else {
-            $(".xg-img-wrap").fadeIn(100);
-            $(".xg-img-wrap").each(function(i, el) {
-                if (!$(el).data("tags").includes(tagFilter))
-                    $(el).fadeOut(100);
-            });
-        }
-        $(".xg-loader").delay(500).fadeOut(100);
-    });
+    //     if (tagFilter == "all") {
+    //         $(".xg-img-wrap").fadeIn(100);
+    //     } else {
+    //         $(".xg-img-wrap").fadeIn(100);
+    //         $(".xg-img-wrap").each(function(i, el) {
+    //             if (!$(el).data("tags").includes(tagFilter))
+    //                 $(el).fadeOut(100);
+    //         });
+    //     }
+    //     $(".xg-loader").delay(500).fadeOut(100);
+    // });
+    $(".xg-btn-tag").on("click", function() {  
+    if ($(this).hasClass("xg-btn-active")) {  
+        return;  
+    }  
+    var tagFilter = $(this).data("tag");  
+    $(".xg-btn-tag").removeClass("xg-btn-active");  
+    $(this).addClass("xg-btn-active");  
+  
+    $(".xg-loader").fadeIn(100);  
+  
+    if (tagFilter == "all") {  
+        $(".xg-img-wrap").fadeIn(100);  
+    } else {  
+        $(".xg-img-wrap").fadeIn(100);  
+        $(".xg-img-wrap").each(function(i, el) {  
+            var elTags = $(el).data("tags");  
+            // Check if elTags is an array or a string  
+            if (Array.isArray(elTags)) {  
+                if (!elTags.includes(tagFilter))  
+                    $(el).fadeOut(100);  
+            } else {  
+                if (elTags != tagFilter)  
+                    $(el).fadeOut(100);  
+            }  
+        });  
+    }  
+    $(".xg-loader").delay(500).fadeOut(100);  
+});  
+
 
 
 
