@@ -57,7 +57,70 @@ $(document).ready(function() {
     //     }
     //     $(".xg-loader").delay(500).fadeOut(100);
     // });
-    $(".xg-btn-tag").on("click", function() {  
+//     $(".xg-btn-tag").on("click", function() {  
+//     if ($(this).hasClass("xg-btn-active")) {  
+//         return;  
+//     }  
+//     var tagFilter = $(this).data("tag");  
+//     $(".xg-btn-tag").removeClass("xg-btn-active");  
+//     $(this).addClass("xg-btn-active");  
+  
+//     $(".xg-loader").fadeIn(100);  
+  
+//     if (tagFilter == "all") {  
+//         $(".xg-img-wrap").fadeIn(100);  
+//     } else {  
+//         $(".xg-img-wrap").fadeIn(100);  
+//         $(".xg-img-wrap").each(function(i, el) {  
+//             var elTags = $(el).data("tags");  
+//             console.log('tag called');
+//             // Check if elTags is an array or a string  
+//             if (Array.isArray(elTags)) {  
+//                 console.log('array found')
+//                 if (!elTags.includes(tagFilter))  
+//                     $(el).fadeOut(100);  
+//             } else {  
+//                 if (elTags != tagFilter)  
+//                     $(el).fadeOut(100);  
+//             }  
+//         });  
+//     }  
+//     $(".xg-loader").delay(500).fadeOut(100);  
+// });  
+
+// $(".xg-btn-tag").on("click", function() {  
+//     if ($(this).hasClass("xg-btn-active")) {  
+//         return;  
+//     }  
+//     var tagFilter = $(this).data("tag");  
+//     $(".xg-btn-tag").removeClass("xg-btn-active");  
+//     $(this).addClass("xg-btn-active");  
+  
+//     $(".xg-loader").fadeIn(100);  
+  
+//     if (tagFilter == "all") {  
+//         $(".xg-img-wrap").fadeIn(100);  
+//     } else {  
+//         $(".xg-img-wrap").fadeIn(100);  
+//         $(".xg-img-wrap").each(function(i, el) {  
+//             try {  
+//                 var elTags = JSON.parse($(el).attr("data-tags"));  
+//                 if (Array.isArray(elTags)) {  
+//                     if (!elTags.includes(tagFilter))  
+//                         $(el).fadeOut(100);  
+//                 } else {  
+//                     if (elTags != tagFilter)  
+//                         $(el).fadeOut(100);  
+//                 }  
+//             } catch (e) {  
+//                 console.log('Error parsing tags:', e);  
+//             }  
+//         });  
+//     }  
+//     $(".xg-loader").delay(500).fadeOut(100);  
+// }); 
+
+$(".xg-btn-tag").on("click", function() {  
     if ($(this).hasClass("xg-btn-active")) {  
         return;  
     }  
@@ -70,21 +133,18 @@ $(document).ready(function() {
     if (tagFilter == "all") {  
         $(".xg-img-wrap").fadeIn(100);  
     } else {  
-        $(".xg-img-wrap").fadeIn(100);  
-        $(".xg-img-wrap").each(function(i, el) {  
-            var elTags = $(el).data("tags");  
-            // Check if elTags is an array or a string  
-            if (Array.isArray(elTags)) {  
-                if (!elTags.includes(tagFilter))  
-                    $(el).fadeOut(100);  
-            } else {  
-                if (elTags != tagFilter)  
-                    $(el).fadeOut(100);  
-            }  
+        $(".xg-img-wrap").fadeOut(100).promise().done(function() {  
+            $(".xg-img-wrap").each(function(i, el) {  
+                var elTags = $(el).data("tags").split(' ');  
+                if (elTags.includes(tagFilter)) {  
+                    $(el).fadeIn(100);  
+                }  
+            });  
         });  
     }  
     $(".xg-loader").delay(500).fadeOut(100);  
 });  
+  
 
 
 
@@ -152,8 +212,10 @@ function createXGImagePreview(xgi) {
 }
 
 function createXGImage(xgi, i) {
+     // Convert tags to a string if it's an array
+     var tags = Array.isArray(xgi.tags) ? xgi.tags.join(' ') : xgi.tags; 
     var xg_img =
-        '<div class="xg-img-wrap" data-tags="' + xgi.tags + '" data-index="' + i + '">\
+        '<div class="xg-img-wrap" data-tags="' + tags+ '" data-index="' + i + '">\
 <div class="xg-img-info">\
 <div class="xg-img-info-inner">\
 <div class="xg-img-prompt">' + xgi.prompt + '</div>\
